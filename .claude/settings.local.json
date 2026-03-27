@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -v \"^d.*\\\\.$\")",
+      "Bash(python3:*)",
+      "Bash(grep -E \"\\\\.\\(pdf|md|txt\\)$\")",
+      "Bash(/tmp/project_analysis.txt:*)",
+      "Read(//tmp/**)",
+      "Bash(cd:*)",
+      "Bash(mv data/HAM10000_metadata.csv data/raw/)",
+      "Bash(mv data/hnmist_28_28_RGB.csv data/raw/)",
+      "Bash(mv entrega.ipynb notebooks/)",
+      "Bash(mv cnn_model.h5 late_fusion_image_model.h5 late_fusion_tabular_model.h5 mejor_modelo_early_fusion.keras tabular_model.h5 models/)",
+      "Bash(mv modelo_churro.h5 experiments/)",
+      "Bash(python:*)",
+      "Bash(python -c \"import json; nb=json.load\\(open\\(''notebooks/07_metrics_and_conclusions.ipynb''\\)\\); [print\\(i, c.get\\(''id'',''NO-ID''\\), c[''cell_type''], repr\\(c[''source''][:60] if isinstance\\(c[''source''],str\\) else ''''.join\\(c[''source'']\\)[:60]\\)\\) for i,c in enumerate\\(nb[''cells'']\\)]\")",
+      "Bash(head -c 100000 \"solucion\\(2\\).ipynb\")",
+      "Bash(python3 -c \"import json; f=open\\(''solucion\\(2\\).ipynb''\\); nb=json.load\\(f\\); [print\\(''\\\\n\\\\n=== CELL'', i, ''===\\\\n'', ''''.join\\(cell[''source'']\\) if cell[''cell_type'']==''code'' else ''MARKDOWN: '' + ''''.join\\(cell[''source'']\\)\\) for i, cell in enumerate\\(nb[''cells'']\\) if ''stratif'' in ''''.join\\(cell.get\\(''source'', []\\)\\)]\")",
+      "Bash(python3 -c \"import json; f=open\\(''solucion\\(2\\).ipynb'', encoding=''utf-8''\\); nb=json.load\\(f\\); cells_with_stratif = [i for i, cell in enumerate\\(nb[''cells'']\\) if ''stratif'' in ''''.join\\(cell.get\\(''source'', []\\)\\)]; print\\(''Cells with stratif:'', cells_with_stratif\\)\")"
+    ]
+  }
+}
