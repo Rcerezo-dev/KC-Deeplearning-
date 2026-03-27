@@ -194,10 +194,27 @@ def get_all_splits(random_state=42):
     X_tab_val   = imp.transform(X_tab_val).astype("float32")
     X_tab_test  = imp.transform(X_tab_test).astype("float32")
 
-    # Normalización de imágenes
-    X_img_train = X_img_train / 255.0
-    X_img_val   = X_img_val   / 255.0
-    X_img_test  = X_img_test  / 255.0
+    # Normalización per-canal (evita data leakage)
+    # Se calcula UNA media y UNA desviación por canal R/G/B, ajustadas SOLO en train.
+    # Ventaja frente a /255: centra y escala según la distribución real del dataset,
+    # en lugar de asumir que todos los píxeles están uniformemente en [0, 255].
+    img_scalers = []
+    for c in range(3):
+        sc = StandardScaler()
+        train_flat = X_img_train[:, :, :, c].reshape(-1, 1)
+        sc.fit(train_flat)
+        img_scalers.append(sc)
+
+        s_train = X_img_train[:, :, :, c].shape
+        s_val   = X_img_val  [:, :, :, c].shape
+        s_test  = X_img_test [:, :, :, c].shape
+
+        X_img_train[:, :, :, c] = sc.transform(
+            X_img_train[:, :, :, c].reshape(-1, 1)).reshape(s_train)
+        X_img_val  [:, :, :, c] = sc.transform(
+            X_img_val  [:, :, :, c].reshape(-1, 1)).reshape(s_val)
+        X_img_test [:, :, :, c] = sc.transform(
+            X_img_test [:, :, :, c].reshape(-1, 1)).reshape(s_test)
 
     print(f"Imágenes+Tabular — Train: {X_img_train.shape[0]} | Val: {X_img_val.shape[0]} | Test: {X_img_test.shape[0]}")
     print(f"Shape imágenes: {X_img_train.shape[1:]} | Features tabular: {X_tab_train.shape[1]}")
