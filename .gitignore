@@ -1,0 +1,26 @@
+# Archivos de solución y entrega original (no publicar)
+solucion(2).ipynb
+notebooks/entrega.ipynb
+explicaciones_claude.md
+mejoras_claude.md
+# Datos (archivos grandes — descargar según data/README.md)
+data/raw/*.csv
+
+# Modelos entrenados (archivos grandes)
+models/*.h5
+models/*.keras
+experiments/*.h5
+
+# Python
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+
+# Entornos virtuales
+.venv/
+env/
+venv/
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
