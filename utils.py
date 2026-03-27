@@ -79,19 +79,21 @@ def _split_70_15_15(arrays, y_encoded, random_state=42):
         *arrays, y_encoded,
         test_size=0.30, random_state=random_state, stratify=y_encoded
     )
-    # train_splits: primeros N, temp_splits: siguientes N, enc_train: -2, enc_temp: -1
+    # train_test_split devuelve los arrays INTERCALADOS:
+    # [arr1_train, arr1_test, arr2_train, arr2_test, ..., y_train, y_test]
+    # Por eso usamos slicing par/impar en lugar de bloques contiguos.
     n = len(arrays)
-    trains     = splits_train[:n]
-    temps      = splits_train[n:2*n]
-    enc_temp   = splits_train[-1]
+    trains   = splits_train[0::2][:n]   # índices 0, 2, 4, ... → partes train
+    temps    = splits_train[1::2][:n]   # índices 1, 3, 5, ... → partes temp (30%)
+    enc_temp = splits_train[-1]         # y_encoded del 30% (para stratify en paso 2)
 
     # Paso 2: dividir el 30% en val (15%) y test (15%)
     splits_val = train_test_split(
         *temps,
         test_size=0.50, random_state=random_state, stratify=enc_temp
     )
-    vals  = splits_val[:n]
-    tests = splits_val[n:]
+    vals  = splits_val[0::2][:n]
+    tests = splits_val[1::2][:n]
 
     return trains, vals, tests
 
